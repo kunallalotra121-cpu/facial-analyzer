@@ -2,9 +2,10 @@ flask
 gunicorn
 opencv-python
 numpy
-mediapipe==0.9.0.1
+mediapipe
 pandas
 scikit-learn
 openpyxl
+
 
 
