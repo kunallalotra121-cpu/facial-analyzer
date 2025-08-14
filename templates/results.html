@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - FaceAnalyzer Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+        }
+
+        .results-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .results-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .results-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        /* Image Section */
+        .image-section {
+            text-align: center;
+        }
+
+        .analyzed-image {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 1rem;
+        }
+
+        .image-info {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .image-info h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Overall Score */
+        .overall-score {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 15px;
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #ffd700 0deg, #ffd700 var(--score-deg), rgba(255,255,255,0.3) var(--score-deg), rgba(255,255,255,0.3) 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: '';
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .score-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            z-index: 1;
+        }
+
+        .score-label {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-description {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Analysis Results */
+        .analysis-results {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .score-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid;
+            transition: transform 0.3s ease;
+        }
+
+        .score-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .score-card.excellent {
+            border-left-color: #00b894;
+        }
+
+        .score-card.good {
+            border-left-color: #fdcb6e;
+        }
+
+        .score-card.average {
+            border-left-color: #e17055;
+        }
+
+        .score-card.poor {
+            border-left-color: #d63031;
+        }
+
+        .score-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .score-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .score-explanation {
+            color: #666;
+            line-height: 1.5;
+            margin-top: 0.5rem;
+        }
+
+        /* Detailed Breakdown */
+        .detailed-breakdown {
+            grid-column: 1 / -1;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 1rem;
+        }
+
+        .detailed-breakdown h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .breakdown-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .breakdown-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .breakdown-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .breakdown-label {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .breakdown-details {
+            font-size: 0.9rem;
+            color: #777;
+            line-height: 1.4;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin: 0.5rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: white;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #d63031;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .results-content {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .results-header h1 {
+                font-size: 2rem;
+            }
+
+            .score-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .score-circle::before {
+                width: 75px;
+                height: 75px;
+            }
+
+            .score-number {
+                font-size: 1.5rem;
+            }
+
+            .breakdown-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in {
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="/" class="logo">🔍 FaceAnalyzer Pro</a>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/upload">Upload</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Loading State -->
+            <div class="loading" id="loadingState">
+                <div class="spinner"></div>
+                <h2>Loading Analysis Results...</h2>
+                <p>Please wait while we prepare your facial analysis report</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="error-state" id="errorState" style="display: none;">
+                <div class="error-icon">❌</div>
+                <h2>No Analysis Data Found</h2>
+                <p>Please upload and analyze an image first</p>
+                <a href="/upload" class="btn">Upload New Image</a>
+            </div>
+
+            <!-- Results Container -->
+            <div class="results-container" id="resultsContainer" style="display: none;">
+                <!-- Results Header -->
+                <div class="results-header">
+                    <h1>Facial Analysis Results</h1>
+                    <p>Comprehensive analysis of your facial features and characteristics</p>
+                </div>
+
+                <!-- Results Content -->
+                <div class="results-content">
+                    <!-- Overall Score -->
+                    <div class="overall-score fade-in">
+                        <div class="score-circle" id="overallScoreCircle">
+                            <div class="score-number" id="overallScoreNumber">--</div>
+                        </div>
+                        <div class="score-label">Overall Attractiveness Score</div>
+                        <div class="score-description" id="overallDescription">
+                            Based on comprehensive facial feature analysis
+                        </div>
+                    </div>
+
+                    <!-- Image Section -->
+                    <div class="image-section slide-in">
+                        <img id="analyzedImage" class="analyzed-image" alt="Analyzed Image">
+                        <div class="image-info" id="imageInfo">
+                            <h3>📊 Image Information</h3>
+                            <div id="imageDetails"></div>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Results -->
+                    <div class="analysis-results slide-in">
+                        <div class="score-card" id="symmetryCard">
+                            <h3>⚖️ Facial Symmetry</h3>
+                            <div class="score-value" id="symmetryScore">--</div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="symmetryFill"></div>
+                            </div>
+                            <div class="score-explanation" id="symmetryExplanation">
+                                Analyzing facial symmetry...
+                            </div>
+                        </div>
+
+                        <div class="score-card" id="proportionCard">
+                            <h3>📐 Golden Ratio</h3>
+                            <div class="score-value" id="proportionScore">--</div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="proportionFill"></div>
+                            </div>
+                            <div class="score-explanation" id="proportionExplanation">
+                                Calculating proportional harmony...
+                            </div>
+                        </div>
+
+                        <div class="score-card" id="skinCard">
+                            <h3>✨ Skin Quality</h3>
+                            <div class="score-value" id="skinScore">--</div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="skinFill"></div>
+                            </div>
+                            <div class="score-explanation" id="skinExplanation">
+                                Evaluating skin texture and quality...
+                            </div>
+                        </div>
+
+                        <div class="score-card" id="eyesCard">
+                            <h3>👁️ Eye Analysis</h3>
+                            <div class="score-value" id="eyesScore">--</div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="eyesFill"></div>
+                            </div>
+                            <div class="score-explanation" id="eyesExplanation">
+                                Analyzing eye characteristics...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Breakdown -->
+                    <div class="detailed-breakdown fade-in">
+                        <h2>🔍 Detailed Feature Analysis</h2>
+                        <div class="breakdown-grid" id="breakdownGrid">
+                            <!-- Breakdown items will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <a href="/upload" class="btn">📸 Analyze Another Image</a>
+                        <button class="btn btn-secondary" onclick="downloadReport()">📄 Download Report</button>
+                        <button class="btn btn-secondary" onclick="shareResults()">📤 Share Results</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let analysisData = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAnalysisResults();
+        });
+
+        // Load analysis results from session storage
+        function loadAnalysisResults() {
+            try {
+                const storedData = sessionStorage.getItem('analysisResults');
+                if (!storedData) {
+                    showErrorState();
+                    return;
+                }
+
+                analysisData = JSON.parse(storedData);
+
+                if (analysisData.error) {
+                    showErrorState(analysisData.error);
+                    return;
+                }
+
+                // Hide loading and show results
+                setTimeout(() => {
+                    document.getElementById('loadingState').style.display = 'none';
+                    document.getElementById('resultsContainer').style.display = 'block';
+                    displayResults();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error loading analysis results:', error);
+                showErrorState('Failed to load analysis results');
+            }
+        }
+
+        // Show error state
+        function showErrorState(message = null) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+
+            if (message) {
+                document.querySelector('#errorState p').textContent = message;
+            }
+        }
+
+        // Display analysis results
+        function displayResults() {
+            if (!analysisData) return;
+
+            // Display image
+            if (analysisData.image_data) {
+                document.getElementById('analyzedImage').src = analysisData.image_data;
+            }
+
+            // Display image info
+            displayImageInfo();
+
+            // Display overall score
+            displayOverallScore();
+
+            // Display individual scores
+            displayIndividualScores();
+
+            // Display detailed breakdown
+            displayDetailedBreakdown();
+
+            // Animate score bars
+            setTimeout(animateScoreBars, 500);
+        }
+
+        // Display image information
+        function displayImageInfo() {
+            const imageDetails = document.getElementById('imageDetails');
+            const uploadTime = analysisData.upload_time ? new Date(analysisData.upload_time).toLocaleString() : 'Unknown';
+            const fileSize = analysisData.file_size ? formatFileSize(analysisData.file_size) : 'Unknown';
+
+            imageDetails.innerHTML = `
+                <strong>Filename:</strong> ${analysisData.filename || 'Unknown'}<br>
+                <strong>Upload Time:</strong> ${uploadTime}<br>
+                <strong>File Size:</strong> ${fileSize}<br>
+                <strong>Face Detected:</strong> ${analysisData.face_detected ? 'Yes' : 'No'}
+            `;
+        }
+
+        // Display overall score
+        function displayOverallScore() {
+            const score = Math.round(analysisData.overall_rating || 0);
+            const scoreElement = document.getElementById('overallScoreNumber');
+            const circleElement = document.getElementById('overallScoreCircle');
+            const descriptionElement = document.getElementById('overallDescription');
+
+            // Animate score counting
+            animateScore(scoreElement, 0, score, 2000);
+
+            // Set circle progress
+            const scoreDeg = (score / 100) * 360;
+            circleElement.style.setProperty('--score-deg', scoreDeg + 'deg');
+
+            // Set description based on score
+            let description = '';
+            if (score >= 90) description = 'Exceptional facial harmony and attractiveness';
+            else if (score >= 80) description = 'Very attractive with excellent features';
+            else if (score >= 70) description = 'Good facial characteristics and proportions';
+            else if (score >= 60) description = 'Average attractiveness with some strong features';
+            else description = 'Room for improvement in facial harmony';
+
+            descriptionElement.textContent = description;
+        }
+
+        // Display individual scores
+        function displayIndividualScores() {
+            // Symmetry
+            const symmetryScore = Math.round(analysisData.symmetry_score || 0);
+            document.getElementById('symmetryScore').textContent = symmetryScore + '/100';
+            document.getElementById('symmetryFill').style.width = symmetryScore + '%';
+            document.getElementById('symmetryExplanation').textContent = 
+                analysisData.detailed_breakdown?.symmetry?.explanation || 'Facial symmetry analysis completed';
+            setScoreCardClass('symmetryCard', symmetryScore);
+
+            // Golden Ratio
+            const proportionScore = Math.round(analysisData.golden_ratio_score || 0);
+            document.getElementById('proportionScore').textContent = proportionScore + '/100';
+            document.getElementById('proportionFill').style.width = proportionScore + '%';
+            document.getElementById('proportionExplanation').textContent = 
+                analysisData.detailed_breakdown?.proportions?.explanation || 'Golden ratio compliance measured';
+            setScoreCardClass('proportionCard', proportionScore);
+
+            // Skin Quality
+            const skinScore = Math.round(analysisData.skin_quality?.overall || 0);
+            document.getElementById('skinScore').textContent = skinScore + '/100';
+            document.getElementById('skinFill').style.width = skinScore + '%';
+            document.getElementById('skinExplanation').textContent = 
+                analysisData.detailed_breakdown?.skin_quality?.explanation || 'Skin texture and quality evaluated';
+            setScoreCardClass('skinCard', skinScore);
+
+            // Eyes
+            const eyesScore = Math.round(analysisData.facial_features?.eyes?.symmetry || 0);
+            document.getElementById('eyesScore').textContent = eyesScore + '/100';
+            document.getElementById('eyesFill').style.width = eyesScore + '%';
+            document.getElementById('eyesExplanation').textContent = 
+                analysisData.detailed_breakdown?.eyes?.explanation || 'Eye characteristics analyzed';
+            setScoreCardClass('eyesCard', eyesScore);
+        }
+
+        // Display detailed breakdown
+        function displayDetailedBreakdown() {
+            const breakdownGrid = document.getElementById('breakdownGrid');
+            const features = analysisData.facial_features || {};
+
+            const breakdownItems = [
+                {
+                    icon: '👁️',
+                    label: 'Eyes',
+                    score: features.eyes?.symmetry || 0,
+                    details: `Detected: ${features.eyes?.count || 0} eyes
+Spacing: ${Math.round(features.eyes?.spacing_score || 0)}/100
+Size: ${Math.round(features.eyes?.size_score || 0)}/100`
+                },
+                {
+                    icon: '👄',
+                    label: 'Mouth',
+                    score: features.mouth?.proportion_score || 0,
+                    details: `Proportion: ${Math.round(features.mouth?.proportion_score || 0)}/100
+Symmetry: ${Math.round(features.mouth?.symmetry_score || 0)}/100`
+                },
+            ];
+
+            breakdownGrid.innerHTML = breakdownItems.map(item => `
+                <div class="breakdown-item">
+                    <div class="breakdown-icon">${item.icon}</div>
+                    <div class="breakdown-score">${Math.round(item.score)}/100</div>
+                    <div class="breakdown-label">${item.label}</div>
+                    <div class="breakdown-details">${item.details.split(/\r?\n/).join('<br>')}</div>
+/g, '<br>')}</div>
+                </div>
+            `).join('');
+        }
+
+        // Set score card class based on score
+        function setScoreCardClass(cardId, score) {
+            const card = document.getElementById(cardId);
+            card.classList.remove('excellent', 'good', 'average', 'poor');
+
+            if (score >= 85) card.classList.add('excellent');
+            else if (score >= 70) card.classList.add('good');
+            else if (score >= 55) card.classList.add('average');
+            else card.classList.add('poor');
+        }
+
+        // Animate score counting
+        function animateScore(element, start, end, duration) {
+            const startTime = performance.now();
+
+            function updateScore(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = Math.round(start + (end - start) * progress);
+
+                element.textContent = current;
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateScore);
+                }
+            }
+
+            requestAnimationFrame(updateScore);
+        }
+
+        // Animate score bars
+        function animateScoreBars() {
+            const scoreFills = document.querySelectorAll('.score-fill');
+            scoreFills.forEach((fill, index) => {
+                setTimeout(() => {
+                    const width = fill.style.width;
+                    fill.style.width = '0%';
+                    setTimeout(() => {
+                        fill.style.width = width;
+                    }, 100);
+                }, index * 200);
+            });
+        }
+
+        // Utility functions
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Action functions
+        function downloadReport() {
+            if (!analysisData) return;
+
+            const reportData = {
+                timestamp: new Date().toISOString(),
+                overall_score: analysisData.overall_rating,
+                detailed_scores: {
+                    symmetry: analysisData.symmetry_score,
+                    golden_ratio: analysisData.golden_ratio_score,
+                    skin_quality: analysisData.skin_quality?.overall,
+                    eyes: analysisData.facial_features?.eyes?.symmetry
+                },
+                explanations: analysisData.detailed_breakdown
+            };
+
+            const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `facial_analysis_report_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function shareResults() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Facial Analysis Results',
+                    text: `I got a ${Math.round(analysisData.overall_rating || 0)}/100 on my facial analysis!`,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy to clipboard
+                const shareText = `I got a ${Math.round(analysisData.overall_rating || 0)}/100 on my facial analysis with FaceAnalyzer Pro!`;
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Results copied to clipboard!');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

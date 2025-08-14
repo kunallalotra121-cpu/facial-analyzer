@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - FaceAnalyzer Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+        }
+
+        .about-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .about-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .about-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .about-content {
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-stack {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .tech-stack h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .tech-item {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .about-header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="/" class="logo">🔍 FaceAnalyzer Pro</a>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/upload">Upload</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <div class="about-container">
+                <!-- About Header -->
+                <div class="about-header">
+                    <h1>About FaceAnalyzer Pro</h1>
+                    <p>Advanced facial analysis powered by artificial intelligence and computer vision</p>
+                </div>
+
+                <!-- About Content -->
+                <div class="about-content">
+                    <div class="section">
+                        <h2>🎯 Our Mission</h2>
+                        <p>
+                            FaceAnalyzer Pro is designed to provide comprehensive, accurate, and scientifically-backed facial analysis 
+                            using cutting-edge computer vision and machine learning technologies. Our platform combines global beauty 
+                            standards with advanced algorithms to deliver detailed insights into facial characteristics and attractiveness metrics.
+                        </p>
+                        <p>
+                            We believe that understanding facial features and proportions can help individuals make informed decisions 
+                            about their appearance while promoting self-confidence and personal growth.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h2>🔬 Our Technology</h2>
+                        <p>
+                            Our analysis engine utilizes state-of-the-art computer vision algorithms and machine learning models 
+                            trained on diverse datasets from around the world. The system performs real-time facial landmark detection, 
+                            symmetry analysis, and proportional measurements based on established beauty standards and golden ratio principles.
+                        </p>
+
+                        <div class="tech-stack">
+                            <h3>Technology Stack</h3>
+                            <div class="tech-list">
+                                <span class="tech-item">Python Flask</span>
+                                <span class="tech-item">OpenCV</span>
+                                <span class="tech-item">NumPy</span>
+                                <span class="tech-item">PIL/Pillow</span>
+                                <span class="tech-item">Computer Vision</span>
+                                <span class="tech-item">Machine Learning</span>
+                                <span class="tech-item">HTML5/CSS3</span>
+                                <span class="tech-item">JavaScript</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>📊 Analysis Features</h2>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">⚖️</div>
+                                <h3>Facial Symmetry</h3>
+                                <p>Advanced symmetry detection using pixel-level comparison and mathematical analysis</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">📐</div>
+                                <h3>Golden Ratio Analysis</h3>
+                                <p>Proportional harmony measurement based on classical beauty standards</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">👁️</div>
+                                <h3>Feature Detection</h3>
+                                <p>Precise detection and analysis of eyes, nose, mouth, and jawline characteristics</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">✨</div>
+                                <h3>Skin Quality Assessment</h3>
+                                <p>Texture analysis and skin uniformity evaluation using image processing</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>🌍 Global Standards</h2>
+                        <p>
+                            Our analysis incorporates beauty standards and facial feature preferences from diverse cultures 
+                            and regions worldwide. The system is trained on datasets representing various ethnicities, 
+                            age groups, and demographic backgrounds to ensure fair and comprehensive analysis.
+                        </p>
+                        <p>
+                            We continuously update our algorithms to reflect evolving beauty standards while maintaining 
+                            scientific accuracy and cultural sensitivity in our assessments.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h2>🔒 Privacy & Security</h2>
+                        <p>
+                            We take your privacy seriously. All uploaded images are processed locally and are not stored 
+                            permanently on our servers. Analysis results are temporarily cached for your session and 
+                            automatically deleted after a specified period.
+                        </p>
+                        <p>
+                            Your facial data is never shared with third parties, and we employ industry-standard security 
+                            measures to protect your information during the analysis process.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h2>📈 Accuracy & Reliability</h2>
+                        <p>
+                            Our facial analysis system has been tested on thousands of images and validated against 
+                            established beauty research and psychological studies. The platform achieves high accuracy 
+                            rates in facial landmark detection and feature analysis.
+                        </p>
+                        <p>
+                            Results are presented with detailed explanations and confidence scores to help you understand 
+                            the analysis methodology and interpret the findings effectively.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
