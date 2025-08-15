@@ -1,0 +1,8 @@
+flask
+numpy
+opencv-python
+mediapipe
+werkzeug
+pillow
+scipy
+matplotlib
