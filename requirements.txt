@@ -1,8 +1,6 @@
 flask
-numpy
+numpy==1.23.5
 opencv-python
-mediapipe
+mediapipe==0.10.13
 werkzeug
 pillow
-scipy
-matplotlib
