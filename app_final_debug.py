@@ -516,7 +516,7 @@ def contact():
     return render_template('contact.html')
 
 if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
     print("🚀 Starting FaceAnalyzer Pro Flask Application (MediaPipe version + ML)")
-    print("🌐 Visit http://127.0.0.1:5000/")
-    # For development use debug=True. Turn off debug in production.
-    app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
+    print(f"🌐 Visit http://127.0.0.1:{port}/")
+    app.run(debug=False, host='0.0.0.0', port=port, threaded=True)
