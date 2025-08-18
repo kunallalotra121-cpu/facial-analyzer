@@ -4,7 +4,8 @@ pip>=22.0.0
 flask==2.3.3
 numpy>=1.24.0
 opencv-python-headless==4.8.1.78
-mediapipe==0.10.7  
+mediapipe  
 werkzeug==2.3.7
 pillow>=9.5.0
 gunicorn==21.2.0
+
