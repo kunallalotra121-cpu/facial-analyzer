@@ -1,9 +1,10 @@
 setuptools>=65.0.0
 wheel>=0.37.0
 pip>=22.0.0
-flask
-numpy==1.23.5
-opencv-python
-mediapipe==0.10.13
-werkzeug
-pillow
+flask==2.3.3
+numpy>=1.24.0
+opencv-python-headless==4.8.1.78
+mediapipe==0.10.7  
+werkzeug==2.3.7
+pillow>=9.5.0
+gunicorn==21.2.0
